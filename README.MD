@@ -11,3 +11,5 @@ Usage: python msprime_models_check.py [model] [print] [tree], where model specif
 Example: python msprime_models_check.py m0001 --print --tree
 The above shows the tree and the info. Omit --tree to not see tree (similarly with print)
 
+#
+This is an edit
