@@ -1,0 +1,5 @@
+in this file I will attempt to detail each file that I write.
+
+README.MD is a file that describes the set up and each other file. 
+
+msprime_models.py is a list of msprime models
