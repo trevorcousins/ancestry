@@ -32,7 +32,7 @@ def m0001(print):
         dd.print_history()
     sim = msprime.simulate(population_configurations=population_configurations,
                            migration_matrix=migration_matrix,
-                           demographic_events=demographic_events, length=6e7, recombination_rate=2e-8,mutation_rate=2e-8,random_seed=24)
+                           demographic_events=demographic_events, length=3e7, recombination_rate=2e-8,mutation_rate=2e-8,random_seed=24)
     return sim
 
 

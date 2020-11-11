@@ -5,6 +5,8 @@
 import argparse
 from msprime_models import * 
 import sys
+from vcf_mhs import *
+import pdb
 
 parser = argparse.ArgumentParser()
 parser.add_argument("model",help="Specify the model to be used, as defined in msprime_models.")
@@ -58,3 +60,8 @@ if print_:
 if args.tree:
     draw_tree(sim)
     tree_info(sim)
+
+# write vcf and mhs
+sim_to_mhs(sim)
+
+pdb.set_trace()

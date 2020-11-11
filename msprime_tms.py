@@ -35,6 +35,7 @@ args = parser.parse_args()
 model = args.model
 N_T = args.Number_of_states
 print('args.Number_of_states is {}'.format(args.Number_of_states))
+print('args.bin_length is {}'.format(args.bin_length))
 if args.print:
     print_ = True
 else: 
@@ -167,3 +168,4 @@ KL_divergence = [entropy(tm_nd_norm[:,i],ab_tm_nd_norm[:,i]) for i in range(0,N_
 
 pdb.set_trace()
 sys.exit()
+
