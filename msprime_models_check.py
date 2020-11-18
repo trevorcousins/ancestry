@@ -62,6 +62,5 @@ if args.tree:
     tree_info(sim)
 
 # write vcf and mhs
-sim_to_mhs(sim)
-
-pdb.set_trace()
+# sim_to_mhs(sim)
+# pdb.set_trace()

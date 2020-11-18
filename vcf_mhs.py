@@ -54,7 +54,7 @@ def sim_to_mhs(sim,vcf_path=os.getcwd() + '/vcf_mhs/',vcf_filename=datetime.now(
 
     # generate and write mhs
     multihetsep(sim_vcf,mhs_path,mhs_filename,verbose)
-    multihetsep_old(sim_vcf,mhs_path,mhs_filename,verbose)
+
     
     # return the vcf file as a dataframe
     return sim_vcf
