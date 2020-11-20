@@ -14,8 +14,10 @@ parser.add_argument("model",help="Specify the model to be used, as defined in ms
 # parser.add_argument("tree",help="Draw trees for this genealogy and info per sesgment?",nargs='?',default=False,type=bool)
 parser.add_argument("--print",help="Print the DemographicDebugger (from msprime) and the number of segratating sites",action="store_true")
 parser.add_argument("--tree",help="Draw trees for this genealogy and info per segment",action="store_true")
+parser.add_argument("--mhs",help="Write a multihetsep file, which can be fed to MSMC.",action="store_true")
+parser.add_argument("-suffix","--output_suffix",help="Give a suffix to the mhs and vcf files that will be written",default='',type=str)
 args = parser.parse_args()
-
+# TODO: add functionality to change path of vcf and mhs 
 
 #grab args
 model = args.model
@@ -29,6 +31,7 @@ exec('sim = ' + model + '(' + str(print_) + ')' )
 print('Simulation finished')
     
 # count number of segregating sites
+# not entirely necessary
 def seg_sites_info():
     count = 0
     show_variants_info = False # do you want to see the information about each segrating site
@@ -54,13 +57,16 @@ def draw_tree(sim):
     return None
 
 if print_:
-    seg_sites = seg_sites_info()
-    print("Number of segregating sites is: {}".format(seg_sites))
+    #seg_sites = seg_sites_info()
+    print("Number of segregating sites is: {}".format(sim.num_sites))
 
 if args.tree:
     draw_tree(sim)
     tree_info(sim)
 
-# write vcf and mhs
-# sim_to_mhs(sim)
-# pdb.set_trace()
+if args.mhs:
+    print('mhs is true. Writing vcf')
+    # write vcf and mhs
+    sim_to_mhs(sim,suffix = '_' + args.output_suffix)
+
+    
