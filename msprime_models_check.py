@@ -1,6 +1,6 @@
 # This script checks that the models as specified in msprime_models.py are functional. 
-
-# TODO: sort out logic for whether printing seg sites info and tree itself
+# example usage:
+# $ python msprime_models_check.py m0001 --print --tree
 
 import argparse
 from msprime_models import * 

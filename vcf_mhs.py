@@ -27,7 +27,7 @@ def dir_check(vcf_path,mhs_path):
     return None
 
 
-def sim_to_mhs(sim,vcf_path=os.getcwd() + '/vcf_mhs/',vcf_filename=datetime.now().strftime("%Y%m%d_%H%M%S"),mhs_path = os.getcwd() + '/vcf_mhs/',mhs_filename = datetime.now().strftime("%Y%m%d_%H%M%S") + '_mhs',suffix = '',verbose="True" ):
+def sim_to_mhs(sim,vcf_path=os.getcwd() + '/vcf_mhs/',vcf_filename=datetime.now().strftime("%Y%m%d"),mhs_path = os.getcwd() + '/vcf_mhs/',mhs_filename = datetime.now().strftime("%Y%m%d") + '_mhs',suffix = '',verbose="True" ):
     # function: given an msprime simulation, write a vcf for it and then call multihetsep() to write mhs
     # sim: msprime simulation object
     # vcf_path: path where you want to save vcf. Default is current directory
@@ -59,7 +59,7 @@ def sim_to_mhs(sim,vcf_path=os.getcwd() + '/vcf_mhs/',vcf_filename=datetime.now(
     multihetsep(sim_vcf,mhs_path,mhs_filename,suffix,gen_mat,verbose)
 
     # return the vcf file as a dataframe
-    return sim_vcf, gen_mat
+    return None
 
 def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
     # function: writes a multihetsep file
