@@ -30,6 +30,7 @@ parser.add_argument("-o_mhsdir","--output_mhsdir",help="Output dir for vcf and m
 parser.add_argument("-o_mhsname","--output_mhsname",help="Output name for vcf and mhs data",default = '',type=str)
 parser.add_argument("-rho","--recomb_rate",help="Rate of recombination per bp per generation",default=2e-08,type=float)
 parser.add_argument("-mew","--mut_rate",help="Rate of mutation per bp per generation",default=2e-08,type=float)
+parser.add_argument("--suffix_time",help="Boolean, whether to write the time in to the files (useful for multi runs of the same simulation",action="store_true")
 parser.add_argument("--print",help="Print the DemographicDebugger (from msprime) and the number of segratating sites",action="store_true")
 parser.add_argument("--tree",help="Draw trees and info per segment",action="store_true")
 args = parser.parse_args()
@@ -37,7 +38,6 @@ args = parser.parse_args()
 # save args
 model = args.model
 print('msprime model is {}, as defined in msprime_models.py'.format(model))
-suffix = ""
 if args.output_coalname == '': # by default, save name as Ymd + model + migprop
     coal_output = args.output_coaldir + datetime.now().strftime("%Y%m%d") + '_' + model + '_mig' + str(int(10*args.migration_prop))
 else:
@@ -47,6 +47,11 @@ if args.output_mhsname == '':
 else: 
     mhs_output = args.output_mhsdir +  datetime.now().strftime("%Y%m%d") + args.output_mhsname
 
+# default suffix. If specified, use datetime now. If not, nothing
+if args.suffix_time:
+    suffix = '_' + datetime.now().strftime("%H%M%S")
+else:
+    suffix = ''
 
 if args.print:
     print_ = True
@@ -65,10 +70,10 @@ print('Simulation finished')
 # save coalescent data to disc
 tmrca_data = np.array(get_coal_data(sim, args)) # get coalescent data, as np array
 header = "tree index, upper sequence interval,tMCRA"
-np.savetxt(coal_output + '.txt', tmrca_data, header=header, delimiter="\t") #write to disc
+np.savetxt(coal_output + suffix + '.txt', tmrca_data, header=header, delimiter="\t") #write to disc
 
 # save vcf and mhs data to disc
-sim_to_mhs(sim,vcf_path = args.output_mhsdir,mhs_path = args.output_mhsdir, suffix = '_' + model + '_mig' + str(int(10*args.migration_prop)))
+sim_to_mhs(sim,vcf_path = args.output_mhsdir,mhs_path = args.output_mhsdir, suffix = '_' + model + '_mig' + str(int(10*args.migration_prop)  ) + suffix )
 
 # load this file
 # test = np.loadtxt(path/to/file,comments="#")
