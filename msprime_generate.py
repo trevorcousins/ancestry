@@ -71,6 +71,7 @@ print('Simulation finished')
 tmrca_data = np.array(get_coal_data(sim, args)) # get coalescent data, as np array
 header = "tree index, upper sequence interval,tMCRA"
 np.savetxt(coal_output + suffix + '.txt', tmrca_data, header=header, delimiter="\t") #write to disc
+print('coal_data written to {}.'.format(coal_output + suffix + '.txt'))
 
 # save vcf and mhs data to disc
 sim_to_mhs(sim,vcf_path = args.output_mhsdir,mhs_path = args.output_mhsdir, suffix = '_' + model + '_mig' + str(int(10*args.migration_prop)  ) + suffix )
