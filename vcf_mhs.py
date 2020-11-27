@@ -13,6 +13,7 @@ import os
 from datetime import datetime
 import pdb
 import time
+import numpy
 
 def dir_check(vcf_path,mhs_path):
     print('checking directories')
@@ -78,14 +79,28 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
 
     # iterate along every row of the vcf
     if verbose: print('generating mhs...')
+    # TODO: strange error in hpc, vcfs are interpreted differently and reading them as below doesn't work. 
+    # TODO: It read sim_vcf['POS'][i] as a pd.series? So to access this value you must use sim_vcf['POS'][i].values[0]
+    
+    # hpc or not?
+    hpc = execute_location()
+    
+    # read in POS column
+    if hpc:
+        POS = sim_vcf['POS'].values # how hpc stores
+    else:
+        POS = sim_vcf['POS'] # how my machine stores
+        
     for i in range(len(sim_vcf)):
         if i == 0: # for the start of the file
-            row = ['chr' + str(sim_vcf['CHROM'][i]),int(sim_vcf['POS'][i]),int(sim_vcf['POS'][i]),str(gen_mat[i][0]) + str(gen_mat[i][1])]
+            # row = ['chr' + str(sim_vcf['CHROM'][i]),int(sim_vcf['POS'][i]),int(sim_vcf['POS'][i]),str(gen_mat[i][0]) + str(gen_mat[i][1])]
+            row = ['chr' + str(sim_vcf['CHROM'][i]),int(POS[i]),int(POS[i]),str(gen_mat[i][0]) + str(gen_mat[i][1])]
             data.loc[i] = row
         elif i > 0:
             #sometimes the VCF files duplicates a row. And hence the resulting multihetsep file is invalid (it has 0 in 3rd column). These lines ensure skipping over that
-            SSPSS = sim_vcf['POS'][i] - sim_vcf['POS'][i - 1] # caluclate the sites sinces previous segregating site (SSPSS)
-            if SSPSS ==0:
+            # SSPSS = sim_vcf['POS'][i] - sim_vcf['POS'][i - 1] # caluclate the sites sinces previous segregating site (SSPSS)
+            SSPSS = POS[i] - POS[i - 1] # caluclate the sites sinces previous segregating site (SSPSS)
+            if SSPSS == 0:
                 na_location.append(i)
                 continue
             row = ['chr' + str(sim_vcf['CHROM'][i]),int(sim_vcf['POS'][i]),int(SSPSS),str(gen_mat[i][0]) + str(gen_mat[i][1])]
@@ -109,3 +124,13 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
     total = t1-t0   
     print('total time taken {}'.format(total))
     return None
+
+def execute_location():
+    # function which determines whether script is being run on hpc or not. 
+    # necessary because the way the hpc processes vcfs is different to my machine and I can't figure out why
+    cwd = os.getcwd()
+    if 'tc557' in cwd: 
+        hpc = True
+    else: 
+        hpc = False
+    return hpc
