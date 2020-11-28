@@ -84,6 +84,7 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
     
     # hpc or not?
     hpc = execute_location()
+    print('hpc is {}'.format(hpc))
     
     # read in POS column
     if hpc:
@@ -91,6 +92,7 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
     else:
         POS = sim_vcf['POS'] # how my machine stores
         
+
     for i in range(len(sim_vcf)):
         if i == 0: # for the start of the file
             # row = ['chr' + str(sim_vcf['CHROM'][i]),int(sim_vcf['POS'][i]),int(sim_vcf['POS'][i]),str(gen_mat[i][0]) + str(gen_mat[i][1])]
@@ -129,7 +131,7 @@ def execute_location():
     # function which determines whether script is being run on hpc or not. 
     # necessary because the way the hpc processes vcfs is different to my machine and I can't figure out why
     cwd = os.getcwd()
-    if 'tc557' in cwd: 
+    if 'trevor' not in cwd: 
         hpc = True
     else: 
         hpc = False
