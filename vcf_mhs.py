@@ -103,7 +103,7 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
             if SSPSS == 0:
                 na_location.append(i)
                 continue
-            row = ['chr' + str(sim_vcf['CHROM'][i]),int(sim_vcf['POS'][i]),int(SSPSS),str(gen_mat[i][0]) + str(gen_mat[i][1])]
+            row = ['chr' + str(sim_vcf['CHROM'][i]),int(POS[i]),int(SSPSS),str(gen_mat[i][0]) + str(gen_mat[i][1])]
             data.loc[i] = row
         
     if verbose: print('mhs generated.')
