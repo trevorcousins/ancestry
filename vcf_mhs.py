@@ -96,6 +96,9 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
         POS = sim_vcf['POS'].values
     else:
         POS = sim_vcf['POS']
+    print('len(sim_vcf) is {}'.format(len(sim_vcf)))
+    print('len(POS) is {}'.format(len(POS)))
+    print('len(gen_mat is {}'.format(len(gen_mat)))
     for i in range(len(sim_vcf)):
         print(f'i is {i}',end="\r",flush=True)
         if i == 0: # for the start of the file

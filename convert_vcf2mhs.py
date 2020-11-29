@@ -31,7 +31,7 @@ sim_vcf = allel.vcf_to_dataframe(filename,fields='*')
 # read vcf with tsk column, for genotype matrix
 # TODO quite sure this doesn't really matter. Could just put arbitrary for genotype column
 columns = ['CHROM','POS','ID','REF','ALT','QUAL','FILTER','INFO','FORMAT','tsk_0']
-vcf_tsk = pd.read_csv('/home/trevor/ancestry/vcf_mhs/20201129_matchingPSC_mig1_142357.vcf',names = columns,delimiter="\t",comment = '#')
+vcf_tsk = pd.read_csv(args.dir + args.filename,names = columns,delimiter="\t",comment = '#')
 genotypes = vcf_tsk['tsk_0']
 gen_mat = [gen[0] + gen[2] for gen in genotypes]
 mhs_filename = args.filename[0:args.filename.find('_')] + '_mhs_' + args.filename[(args.filename.find('_')+1):(len(args.filename)-4)] 
