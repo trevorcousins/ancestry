@@ -83,20 +83,24 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
     # TODO: It read sim_vcf['POS'][i] as a pd.series? So to access this value you must use sim_vcf['POS'][i].values[0]
     
     # hpc or not?
-    hpc = execute_location()
-    print('hpc is {}'.format(hpc))
-    
-    # read in POS column
-    if hpc:
-        POS = sim_vcf['POS'].values # how hpc stores
-    else:
-        POS = sim_vcf['POS'] # how my machine stores
-        
+    # hpc = execute_location()
+    # print('hpc is {}'.format(hpc))
 
+    # # read in POS column
+    # if hpc:
+    #     POS = sim_vcf['POS'].values # how hpc stores
+    # else:
+    #     POS = sim_vcf['POS'] # how my machine stores
+        
+    if type(sim_vcf['POS']) is not int:
+        POS = sim_vcf['POS'].values
+    else:
+        POS = sim_vcf['POS']
     for i in range(len(sim_vcf)):
+        print(f'i is {i}',end="\r",flush=True)
         if i == 0: # for the start of the file
             # row = ['chr' + str(sim_vcf['CHROM'][i]),int(sim_vcf['POS'][i]),int(sim_vcf['POS'][i]),str(gen_mat[i][0]) + str(gen_mat[i][1])]
-            row = ['chr' + str(sim_vcf['CHROM'][i]),int(POS[i]),int(POS[i]),str(gen_mat[i][0]) + str(gen_mat[i][1])]
+            row = ['chr1',int(POS[i]),int(POS[i]),str(gen_mat[i][0]) + str(gen_mat[i][1])]
             data.loc[i] = row
         elif i > 0:
             #sometimes the VCF files duplicates a row. And hence the resulting multihetsep file is invalid (it has 0 in 3rd column). These lines ensure skipping over that
@@ -105,7 +109,8 @@ def multihetsep(sim_vcf,mhs_path ,mhs_filename,suffix, gen_mat,verbose):
             if SSPSS == 0:
                 na_location.append(i)
                 continue
-            row = ['chr' + str(sim_vcf['CHROM'][i]),int(POS[i]),int(SSPSS),str(gen_mat[i][0]) + str(gen_mat[i][1])]
+            # row = ['chr' + str(sim_vcf['CHROM'][i]),int(POS[i]),int(SSPSS),str(gen_mat[i][0]) + str(gen_mat[i][1])]
+            row = ['chr1',int(POS[i]),int(SSPSS),str(gen_mat[i][0]) + str(gen_mat[i][1])]
             data.loc[i] = row
         
     if verbose: print('mhs generated.')
