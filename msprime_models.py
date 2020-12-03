@@ -262,7 +262,7 @@ def matching_mig02(print_):
     if not hpc:
         path = '/home/trevor/ancestry/msmc_out/mig02/mig02_all.final.txt'
     else: 
-        path = '/home/tc557/ancestry/msmc_out/mig01/mig02_all.final.txt'
+        path = '/home/tc557/ancestry/msmc_out/mig02/mig02_all.final.txt'
     # load data
 
     mu = 2e-08
@@ -326,3 +326,238 @@ def matching_mig02(print_):
                            demographic_events=demographic_events, length=150e+6, recombination_rate=2e-08,
                            mutation_rate=mu)
     return sim
+
+def matching_mig03(print_):
+    # this history of population size change matches the coalescent rate as detected by PSMC
+    # for a structured history, with mig rate =01 (see my_log.txt)
+    pwd = os.getcwd()
+    if 'trevor' in pwd:
+        hpc = False
+    else: 
+        hpc = True
+    
+    # load file, different depending on hpc or Surface
+    if not hpc:
+        path = '/home/trevor/ancestry/msmc_out/mig03/mig03_all.final.txt'
+    else: 
+        path = '/home/tc557/ancestry/msmc_out/mig03/mig03_all.final.txt'
+    # load data
+
+    mu = 2e-08
+    data = np.loadtxt(path,skiprows=1)
+    # load coalescent rate column
+    lambda_ = data[:,3]
+    # convert this into pop size estimates and get time intervals
+    # check mu matches simulation that was used to create!
+    popsize_estimate = (1/data[:,3])/(2*mu)
+    times = data[:,1]/mu
+    
+
+    N_0 = 10000
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_0, growth_rate=0),
+    ]
+    demographic_events = [
+        msprime.PopulationParametersChange(time=times[0], initial_size=popsize_estimate[0]),
+        msprime.PopulationParametersChange(time=times[1], initial_size=popsize_estimate[1]),
+        msprime.PopulationParametersChange(time=times[2], initial_size=popsize_estimate[2]),
+        msprime.PopulationParametersChange(time=times[3], initial_size=popsize_estimate[3]),
+        msprime.PopulationParametersChange(time=times[4], initial_size=popsize_estimate[4]),
+        msprime.PopulationParametersChange(time=times[5], initial_size=popsize_estimate[5]),
+        msprime.PopulationParametersChange(time=times[6], initial_size=popsize_estimate[6]),
+        msprime.PopulationParametersChange(time=times[7], initial_size=popsize_estimate[7]),
+        msprime.PopulationParametersChange(time=times[8], initial_size=popsize_estimate[8]),
+        msprime.PopulationParametersChange(time=times[9], initial_size=popsize_estimate[9]),
+        msprime.PopulationParametersChange(time=times[10], initial_size=popsize_estimate[10]),
+        msprime.PopulationParametersChange(time=times[11], initial_size=popsize_estimate[11]),
+        msprime.PopulationParametersChange(time=times[12], initial_size=popsize_estimate[12]),
+        msprime.PopulationParametersChange(time=times[13], initial_size=popsize_estimate[13]),
+        msprime.PopulationParametersChange(time=times[14], initial_size=popsize_estimate[14]),
+        msprime.PopulationParametersChange(time=times[15], initial_size=popsize_estimate[15]),
+        msprime.PopulationParametersChange(time=times[16], initial_size=popsize_estimate[16]),
+        msprime.PopulationParametersChange(time=times[17], initial_size=popsize_estimate[17]),
+        msprime.PopulationParametersChange(time=times[18], initial_size=popsize_estimate[18]),
+        msprime.PopulationParametersChange(time=times[19], initial_size=popsize_estimate[19]),
+        msprime.PopulationParametersChange(time=times[20], initial_size=popsize_estimate[20]),
+        msprime.PopulationParametersChange(time=times[21], initial_size=popsize_estimate[21]),
+        msprime.PopulationParametersChange(time=times[22], initial_size=popsize_estimate[22]),
+        msprime.PopulationParametersChange(time=times[23], initial_size=popsize_estimate[23]),
+        msprime.PopulationParametersChange(time=times[24], initial_size=popsize_estimate[24]),
+        msprime.PopulationParametersChange(time=times[25], initial_size=popsize_estimate[25]),
+        msprime.PopulationParametersChange(time=times[26], initial_size=popsize_estimate[26]),
+        msprime.PopulationParametersChange(time=times[27], initial_size=popsize_estimate[27]),
+        msprime.PopulationParametersChange(time=times[28], initial_size=popsize_estimate[28]),
+        msprime.PopulationParametersChange(time=times[29], initial_size=popsize_estimate[29]),
+        msprime.PopulationParametersChange(time=times[30], initial_size=popsize_estimate[30]),
+        msprime.PopulationParametersChange(time=times[31], initial_size=popsize_estimate[31])
+    ]
+    # Use the demography debugger to print out the demographic history
+    # that we have just described.
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,
+        demographic_events=demographic_events)
+    if print_:
+        print('Demographic history:\n')
+        dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           demographic_events=demographic_events, length=150e+6, recombination_rate=2e-08,
+                           mutation_rate=mu)
+    return sim
+
+def matching_mig04(print_):
+    # this history of population size change matches the coalescent rate as detected by PSMC
+    # for a structured history, with mig rate =01 (see my_log.txt)
+    pwd = os.getcwd()
+    if 'trevor' in pwd:
+        hpc = False
+    else: 
+        hpc = True
+    
+    # load file, different depending on hpc or Surface
+    if not hpc:
+        path = '/home/trevor/ancestry/msmc_out/mig04/mig04_all.final.txt'
+    else: 
+        path = '/home/tc557/ancestry/msmc_out/mig04/mig04_all.final.txt'
+    # load data
+
+    mu = 2e-08
+    data = np.loadtxt(path,skiprows=1)
+    # load coalescent rate column
+    lambda_ = data[:,3]
+    # convert this into pop size estimates and get time intervals
+    # check mu matches simulation that was used to create!
+    popsize_estimate = (1/data[:,3])/(2*mu)
+    times = data[:,1]/mu
+    
+
+    N_0 = 10000
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_0, growth_rate=0),
+    ]
+    demographic_events = [
+        msprime.PopulationParametersChange(time=times[0], initial_size=popsize_estimate[0]),
+        msprime.PopulationParametersChange(time=times[1], initial_size=popsize_estimate[1]),
+        msprime.PopulationParametersChange(time=times[2], initial_size=popsize_estimate[2]),
+        msprime.PopulationParametersChange(time=times[3], initial_size=popsize_estimate[3]),
+        msprime.PopulationParametersChange(time=times[4], initial_size=popsize_estimate[4]),
+        msprime.PopulationParametersChange(time=times[5], initial_size=popsize_estimate[5]),
+        msprime.PopulationParametersChange(time=times[6], initial_size=popsize_estimate[6]),
+        msprime.PopulationParametersChange(time=times[7], initial_size=popsize_estimate[7]),
+        msprime.PopulationParametersChange(time=times[8], initial_size=popsize_estimate[8]),
+        msprime.PopulationParametersChange(time=times[9], initial_size=popsize_estimate[9]),
+        msprime.PopulationParametersChange(time=times[10], initial_size=popsize_estimate[10]),
+        msprime.PopulationParametersChange(time=times[11], initial_size=popsize_estimate[11]),
+        msprime.PopulationParametersChange(time=times[12], initial_size=popsize_estimate[12]),
+        msprime.PopulationParametersChange(time=times[13], initial_size=popsize_estimate[13]),
+        msprime.PopulationParametersChange(time=times[14], initial_size=popsize_estimate[14]),
+        msprime.PopulationParametersChange(time=times[15], initial_size=popsize_estimate[15]),
+        msprime.PopulationParametersChange(time=times[16], initial_size=popsize_estimate[16]),
+        msprime.PopulationParametersChange(time=times[17], initial_size=popsize_estimate[17]),
+        msprime.PopulationParametersChange(time=times[18], initial_size=popsize_estimate[18]),
+        msprime.PopulationParametersChange(time=times[19], initial_size=popsize_estimate[19]),
+        msprime.PopulationParametersChange(time=times[20], initial_size=popsize_estimate[20]),
+        msprime.PopulationParametersChange(time=times[21], initial_size=popsize_estimate[21]),
+        msprime.PopulationParametersChange(time=times[22], initial_size=popsize_estimate[22]),
+        msprime.PopulationParametersChange(time=times[23], initial_size=popsize_estimate[23]),
+        msprime.PopulationParametersChange(time=times[24], initial_size=popsize_estimate[24]),
+        msprime.PopulationParametersChange(time=times[25], initial_size=popsize_estimate[25]),
+        msprime.PopulationParametersChange(time=times[26], initial_size=popsize_estimate[26]),
+        msprime.PopulationParametersChange(time=times[27], initial_size=popsize_estimate[27]),
+        msprime.PopulationParametersChange(time=times[28], initial_size=popsize_estimate[28]),
+        msprime.PopulationParametersChange(time=times[29], initial_size=popsize_estimate[29]),
+        msprime.PopulationParametersChange(time=times[30], initial_size=popsize_estimate[30]),
+        msprime.PopulationParametersChange(time=times[31], initial_size=popsize_estimate[31])
+    ]
+    # Use the demography debugger to print out the demographic history
+    # that we have just described.
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,
+        demographic_events=demographic_events)
+    if print_:
+        print('Demographic history:\n')
+        dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           demographic_events=demographic_events, length=150e+6, recombination_rate=2e-08,
+                           mutation_rate=mu)
+    return sim
+
+def matching_mig05(print_):
+    # this history of population size change matches the coalescent rate as detected by PSMC
+    # for a structured history, with mig rate =01 (see my_log.txt)
+    pwd = os.getcwd()
+    if 'trevor' in pwd:
+        hpc = False
+    else: 
+        hpc = True
+    
+    # load file, different depending on hpc or Surface
+    if not hpc:
+        path = '/home/trevor/ancestry/msmc_out/mig05/mig05_all.final.txt'
+    else: 
+        path = '/home/tc557/ancestry/msmc_out/mig05/mig05_all.final.txt'
+    # load data
+
+    mu = 2e-08
+    data = np.loadtxt(path,skiprows=1)
+    # load coalescent rate column
+    lambda_ = data[:,3]
+    # convert this into pop size estimates and get time intervals
+    # check mu matches simulation that was used to create!
+    popsize_estimate = (1/data[:,3])/(2*mu)
+    times = data[:,1]/mu
+    
+
+    N_0 = 10000
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_0, growth_rate=0),
+    ]
+    demographic_events = [
+        msprime.PopulationParametersChange(time=times[0], initial_size=popsize_estimate[0]),
+        msprime.PopulationParametersChange(time=times[1], initial_size=popsize_estimate[1]),
+        msprime.PopulationParametersChange(time=times[2], initial_size=popsize_estimate[2]),
+        msprime.PopulationParametersChange(time=times[3], initial_size=popsize_estimate[3]),
+        msprime.PopulationParametersChange(time=times[4], initial_size=popsize_estimate[4]),
+        msprime.PopulationParametersChange(time=times[5], initial_size=popsize_estimate[5]),
+        msprime.PopulationParametersChange(time=times[6], initial_size=popsize_estimate[6]),
+        msprime.PopulationParametersChange(time=times[7], initial_size=popsize_estimate[7]),
+        msprime.PopulationParametersChange(time=times[8], initial_size=popsize_estimate[8]),
+        msprime.PopulationParametersChange(time=times[9], initial_size=popsize_estimate[9]),
+        msprime.PopulationParametersChange(time=times[10], initial_size=popsize_estimate[10]),
+        msprime.PopulationParametersChange(time=times[11], initial_size=popsize_estimate[11]),
+        msprime.PopulationParametersChange(time=times[12], initial_size=popsize_estimate[12]),
+        msprime.PopulationParametersChange(time=times[13], initial_size=popsize_estimate[13]),
+        msprime.PopulationParametersChange(time=times[14], initial_size=popsize_estimate[14]),
+        msprime.PopulationParametersChange(time=times[15], initial_size=popsize_estimate[15]),
+        msprime.PopulationParametersChange(time=times[16], initial_size=popsize_estimate[16]),
+        msprime.PopulationParametersChange(time=times[17], initial_size=popsize_estimate[17]),
+        msprime.PopulationParametersChange(time=times[18], initial_size=popsize_estimate[18]),
+        msprime.PopulationParametersChange(time=times[19], initial_size=popsize_estimate[19]),
+        msprime.PopulationParametersChange(time=times[20], initial_size=popsize_estimate[20]),
+        msprime.PopulationParametersChange(time=times[21], initial_size=popsize_estimate[21]),
+        msprime.PopulationParametersChange(time=times[22], initial_size=popsize_estimate[22]),
+        msprime.PopulationParametersChange(time=times[23], initial_size=popsize_estimate[23]),
+        msprime.PopulationParametersChange(time=times[24], initial_size=popsize_estimate[24]),
+        msprime.PopulationParametersChange(time=times[25], initial_size=popsize_estimate[25]),
+        msprime.PopulationParametersChange(time=times[26], initial_size=popsize_estimate[26]),
+        msprime.PopulationParametersChange(time=times[27], initial_size=popsize_estimate[27]),
+        msprime.PopulationParametersChange(time=times[28], initial_size=popsize_estimate[28]),
+        msprime.PopulationParametersChange(time=times[29], initial_size=popsize_estimate[29]),
+        msprime.PopulationParametersChange(time=times[30], initial_size=popsize_estimate[30]),
+        msprime.PopulationParametersChange(time=times[31], initial_size=popsize_estimate[31])
+    ]
+    # Use the demography debugger to print out the demographic history
+    # that we have just described.
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,
+        demographic_events=demographic_events)
+    if print_:
+        print('Demographic history:\n')
+        dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           demographic_events=demographic_events, length=150e+6, recombination_rate=2e-08,
+                           mutation_rate=mu)
+    return sim
+
