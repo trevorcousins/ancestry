@@ -65,8 +65,8 @@ def get_coal_data(sim,args):
     return tmrca_data
 
 # function to divide the true coalescent data into bins of defined size
-def round_bin_coal_data(sim,tmrca_data,args):
-    coal_times = np.zeros(shape=(int(sim.sequence_length/args.bin_length))) # create empty array which will store the binned coalescent times
+def round_bin_coal_data(seq_length,tmrca_data,args):
+    coal_times = np.zeros(shape=(int(seq_length/args.bin_length))) # create empty array which will store the binned coalescent times
     ind = 0 #index for binning
     for i in range(0,len(tmrca_data)):
         coal_times[ind:math.floor(tmrca_data[i][1]/args.bin_length)] = tmrca_data[i][2]
