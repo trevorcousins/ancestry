@@ -1,5 +1,99 @@
+# Log
+
 in this file I will attempt to detail each file that I write.
 
 README.MD is a file that describes the set up and each other file. 
 
-msprime_models.py is a list of msprime models
+## Date: 20201119
+
+RUn MSMC2 on different histories with various amounts of structure. Uses model instant_struct, where the final integer suffix indicates the amount of migration (divide the integer by 10). Can't remember sequence length. 
+
+
+## Date: 20201120
+
+Use the bash script 20201120_msprimejobs to practise simulating different msprime models. I ran 5 jobs, each with a different amount of migration. The log files are found in ancestry/logs.
+The vcf and mhs scripts are found in ancestry/vcf_mhs. The coalescent data is stored in ancestry/coal_data .  
+
+## Date 20201123
+
+Within the hpc, I used the command line "$ sbatch 201123_slurm_submit.peta4-skylake" to run the bash script "ancestry/20201123_msprimejobs". This will attempt to run msprime simulations
+of length 3e+9 with a constant population size history, with various levels of instantaneous migration. See the script submitted for command line details. This should write various files; 
+coalescent data should be saved to /coal_data, vcfs and mhs files to /vcf_mhs.
+
+update as of 20201124 - job failed, exceeded time limit
+
+## Date 20201124 
+
+Submitted similar job to the above. Name of submission script was 201124_slurm_submit.peta4-skylake. Set max hours as 12. Hopefully this works. 
+
+update as of 20201125 - job failed, exceeded time limit
+
+## Date 20201126
+
+Submitted two jobs to slurm, 201126_slurm_submit.peta4-skylake and 201126_slurm_submit.peta4-skylake_b. These run the files 20201126_msprimejobs_mig03_a and 20201126_msprimejobs_mig03; which each simulate structure with instantaneous migration rate as 0.1 and 0.3. 
+They run 20 jobs, each on sequence length 150Mb.
+
+update as of 20201127: these worked but something was wrong. Deleting all output, nothing kept that was written. 
+
+## Date 20201127
+
+Submitted job 31794200 which runs the script 20201127_msprimejobs_mig03, which runs 20 msprime simulations, of length 150MB each, of instantaneous structure. Command line (repeated 20 times) was: 
+python msprime_generate.py instant_struct0001 -L 150000000 -mig 0.3 -t 20000 40000 --suffix -o_mhsdir /home/tc557/ancestry/vcf_mhs/mig03/ -o_coaldir /home/tc557/ancestry/coal_data/mig03/
+Submission script was 201127_slurm_msprimemig03.
+Writing to the described directories as described above.
+
+Also submitted job 31794219 which runs the script 20201127_msprimejobs_mig01, which runs 20 msprime simulations of length 150Mb, of instantaneous structure with mig_prop = 0.1. 
+Command line was : 
+python msprime_generate.py instant_struct0001 -L 150000000 -mig 0.1 -t 20000 40000 --suffix -o_mhsdir /home/tc557/ancestry/vcf_mhs/mig01/ -o_coaldir /home/tc557/ancestry/coal_data/mig01
+Submission script was 201127_slurm_msprimemig01.
+Writes to the described directories as above.
+
+update as of 20201127: both these jobs finished. There is a strange error I get when I try to read the vcfs to write the mhs, in the hpc. It reads the 'POS' column as pd.series, where as on my machine it reads it as an int.
+Therefore writing the mhs files failed, but everything else worked fine; i.e. there are 20 coal_data files in coal_data/mig01 and coal_data/mig03; 20 vcf files in vcf_mhs/mig01 and vcf_mhs/mig03. 
+Writing the mhs files from the vcf files would not be hard, simply redo the mhs script but use vcf['POS'][i].values[0] intead of vcf['POS'][i].
+
+Submitting now a script that runs 20 msprime simulations with rate 0.2, very similar to above. Job id 31795669.
+Submission script is 201127_slurm_msprimemig02, which executes the script 20201127_msprimejob_mig02. I think I fixed the mhs writing error as described above.
+update: job has finished, but my previous mhs fix did not work; i.e. coal_data and vcf data written but not mhs. 
+Before, I said if "tc557" in working dir, then set hpc = True, but I think the slurm scripts run from another location. 
+Therefore, I Will try now changing the statement to if "trevor" not in working dir, which hopefully will do the trick. 
+
+Submutting script 201127_slurm_msprimemig04 which will run the executable 20201127_msprimejobs_mig04, to run 20 simulations of 150MB of a structured history with 0.4 migration. 
+This completed fine but again the mhs failed to write.
+
+## Date 20201128
+
+Submitted script 201128_slurm_msprime05 which executes 20201128_msprimejob_mig05 which is running with job number 31820379. This runs 20 simulations of 150Mb of structure with mig rate 0.5 . Will write to directories ancestry/coal_data/mig05/ and ancestry/vcf_mhs/mig05/.
+
+In summary, today and yesterday I submitted the same 5 jobs, where there is a varying amount of instantaneous migration (0.1, 0.2, 0.3, 0.4 or 0.5).
+Each job used a sequence length of 150Mb, and ran 20 times. The coalalescent data for each is stored in (the hpc)  /ancestry/coal_data/mig0X , replacing X with 1 2 3 4 or 5. Similarly the vcfs are in ancestry/vcf_mhs/mig0X. TODO write the mhs files from these vcf files.  
+
+## Date 20201130
+
+I wrote a function to convert these into mhs. In each /mig0X folder, there should now be their corresponding multihetsep files.
+
+## Date 20201130
+
+I wrote 20 vcfs and mhs files that correspond to the history in MAzet 2016's Fig 3b; these are in the folder vcf_mhs/mazet2016_3b (on Surface). 
+I use the python script msprime_create.py and ran this 20 times (random seed not set). I then ran MSMC2 on all of these with the command:
+./MSMC2 `find /home/trevor/ancestry/vcf_mhs/mazet2016_3b/ -name "*.txt"` -o msmc_out/20201201_mazet2016_3b
+which looks for all files in /home/trevor/ancestry/vcf_mhs/mazet2016_3b/ that end with .txt, and runs msmc2 on them.  
+
+I can't seem to get MSMC2 behaving as I would expect. Creating 20 150MB multihetseps for a constant population size, to see if this works. Running `python msprime_create.py m0001 --suffix_time` and writing results to ancestry/vcf_mhs/const01
+
+
+(On the HPC) run MSMC2 on all mig01 multihetseps, using the command line:
+./MSMC2 `find /home/tc557/ancestry/vcf_mhs/mig01/ -name "*.txt"` -o msmc_out/mig01/mig01_all
+
+
+## Date 20201203
+
+With the MSMC output for each structured history mig01, mig02, mig03, mig04, mig05 I created a matching population size change history, see the models:
+matching_mig01, matching_mig02 etc. For each of these models, I ran 20 simulations of 150MB, with the command line:
+python msprime_create.py matching_mig03 -o_mhsname matching_mig03/ -o_coalname matching_mig03/ --suffix
+
+## Date 20201204
+
+Create new folders (on the hpc) called const_mig1 and const_mig2 in coal_data AND vcf_mhs. These are to test two scenarios of msprime models, const_mig0001 and const_mig0002.
+These have constant migration followed by a mass migration. const_mig0001 uses: msprime.MassMigration(time=T_2, source =1, destination = 0, proportion = 1).   
+and const_mig0002 uses: msprime.MassMigration(time=T_2, source =0, destination = 2, proportion = 1)

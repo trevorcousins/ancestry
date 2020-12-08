@@ -38,6 +38,32 @@ def m0001(print_):
                            demographic_events=demographic_events, length=150e+6, recombination_rate=2e-8,mutation_rate=2e-8)
     return sim
 
+# population that double in size at some time
+def m0002(print_):
+    N_A = 10000
+    T_A1 = 20000 
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_A,growth_rate=0)
+    ]
+    migration_matrix = [
+        [0],
+        ]
+    demographic_events = [
+        msprime.PopulationParametersChange(time=T_A1, initial_size=N_A*2)
+    ]
+    # Use the demography debugger to print out the demographic history
+    # that we have just described.
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,
+        migration_matrix=migration_matrix,
+        demographic_events=demographic_events)
+    if print_:
+        dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           migration_matrix=migration_matrix,
+                           demographic_events=demographic_events, length=150e+6, recombination_rate=2e-8,mutation_rate=2e-8)
+    return sim
 
 # model with instantaneous migration 
 # TODO set so it matches instant_structure0001, where N_B is dependent on migration rate
@@ -600,6 +626,41 @@ def const_mig0002(print_):
     N_B0 =  1e+04
     T_1 = 2e+04
     T_2 = 2.5e+04
+    m = 4e-03
+    
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_A0, growth_rate=0),
+        msprime.PopulationConfiguration(
+            sample_size=0, initial_size=N_B0, growth_rate=0)
+    ]
+    migration_matrix = [[0,0],[0,0]]
+    demographic_events = [
+        msprime.MigrationRateChange(time = T_1,rate = m, matrix_index=(0,1)),
+        msprime.MigrationRateChange(time = T_1,rate = m, matrix_index=(1,0)),
+        msprime.MigrationRateChange(time = T_2,rate = 0, matrix_index=(0,1)),
+        msprime.MigrationRateChange(time = T_2,rate = 0, matrix_index=(1,0)),
+        msprime.MassMigration(time=T_2, source =0, destination =1, proportion = 1)
+    ]
+    # Use the demography debugger to print out the demographic history
+    # that we have just described.
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,migration_matrix=migration_matrix,
+        demographic_events=demographic_events)
+    if print_:
+        print('Demographic history:\n')
+        dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           demographic_events=demographic_events, length=150e+06, recombination_rate=2e-08,
+                           mutation_rate=2e-08)
+    return sim
+
+
+def const_mig0003(print_):
+    N_A0 = 1e+04
+    N_B0 =  1e+04
+    T_1 = 2e+04
+    T_2 = 4e+04
     m = 4e-03
     
     population_configurations = [

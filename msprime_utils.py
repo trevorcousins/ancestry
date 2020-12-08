@@ -96,3 +96,10 @@ def normalise(matrix,how = 'colsum'):
                 exec(execute_me)
         matrix = np.array(normalised_tm)
     return matrix
+
+def num_occcurences(array,time_intervals):
+    counts = np.zeros(shape=len(time_intervals))
+    for i in range(len(array)):
+        counts[array[i]] += 1
+    return counts
+
