@@ -689,3 +689,33 @@ def const_mig0003(print_):
                            demographic_events=demographic_events, length=150e+06, recombination_rate=2e-08,
                            mutation_rate=2e-08)
     return sim
+
+
+# N_0,N_B0,mig_prop,t_1,t_2,seq_length,recomb_rate,mut_rate,print_
+def double_m0002(N_0,N_B0,mig_prop,T_1,T_2,seq_length,recomb_rate,mut_rate,print_):
+    # here mig_prop is the percentage change in N_0 between times T_1 and T_2
+    # use this to match contmig5e4
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_0,growth_rate=0)
+    ]
+    migration_matrix = [
+        [0],
+        ]
+    demographic_events = [
+        msprime.PopulationParametersChange(time=T_1, initial_size=N_0*mig_prop),
+        msprime.PopulationParametersChange(time=T_2, initial_size=N_0)
+    ]
+    # Use the demography debugger to print out the demographic history
+    # that we have just described.
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,
+        migration_matrix=migration_matrix,
+        demographic_events=demographic_events)
+    if print_:
+        dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           migration_matrix=migration_matrix,
+                           demographic_events=demographic_events, length=seq_length, recombination_rate=recomb_rate,mutation_rate=mut_rate)
+    return sim
+
