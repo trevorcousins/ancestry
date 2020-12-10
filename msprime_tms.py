@@ -51,7 +51,7 @@ exec('sim = ' + model + '(' + str(print_) + ')' )
 print('Simulation finished')
   
 tmrca_data = get_coal_data(sim, args) # get true coalescent 
-coal_times = round_bin_coal_data(sim,tmrca_data, args) # partition coalescent data into bins  
+coal_times = round_bin_coal_data(sim.sequence_length,tmrca_data, args) # partition coalescent data into bins  
 T_scaled, T, N_0 = scaled_time_intervals(sim,N_T = args.Number_of_states) # get scaled time intervals
 coal_times_intervals = round_coal_times(coal_times,T_scaled,N_T=args.Number_of_states) # round binned coalescent times into their respected interval
 tm = tm_counts(coal_times_intervals,N_T=args.Number_of_states) # generate a matrix of counts, where each element counts the number of times state j transitions to state i for matrix [i,j]

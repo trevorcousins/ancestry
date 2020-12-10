@@ -20,6 +20,7 @@ from scipy.stats import entropy
 parser = argparse.ArgumentParser()
 parser.add_argument("model",help="Specify the model to be used, as defined in msprime_models.")
 parser.add_argument("-N","--N_0",help="Initial population size (Default is 1e+04",default=1e+04,type=int)
+parser.add_argument("-N_B","--N_B0",help="Initial population size for secondary population (Default is 1e+04",default=1e+04,type=int)
 parser.add_argument("-L","--seq_length",help="Length of the sequence to be simulated (default 3e+07)",default=int(3e+07),type=int)
 parser.add_argument("-mig","--migration_prop",help="Proportion of migrating population (default 0.3)",default=0.3,type=float)
 parser.add_argument("-t","--time_splits",nargs=2,help="Time of splits, in generations (default t_1 = 2e+04, t_2 = 4e+04)",default = [int(2e+04),int(4e+04)])
@@ -60,7 +61,7 @@ else:
 
 # run simulation
 print('Running simulation of model {}'.format(model))
-command_line = 'sim = ' + model + '(' + str(args.N_0) + ',' + str(args.migration_prop) + ',' + str(args.time_splits[0]) + ',' + str(args.time_splits[1]) + ',' + str(args.seq_length) + ',' + str(args.recomb_rate) + ',' + str(args.mut_rate) + ',' + str(print_) + ')'
+command_line = 'sim = ' + model + '(' + str(args.N_0) + ',' + str(args.N_B0) + ',' + str(args.migration_prop) + ',' + str(args.time_splits[0]) + ',' + str(args.time_splits[1]) + ',' + str(args.seq_length) + ',' + str(args.recomb_rate) + ',' + str(args.mut_rate) + ',' + str(print_) + ')'
 exec('sim = ' + command_line)
 # str(print_) + ')' )
 # def instant_struct0001(N_0,mig_prop,t_1,t_2,seq_length,recomb_rate,mut_rate,print):

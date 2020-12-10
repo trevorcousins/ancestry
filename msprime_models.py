@@ -587,26 +587,26 @@ def matching_mig05(print_):
                            mutation_rate=mu)
     return sim
 
-def const_mig0001(print_):
-    N_A0 = 1e+04
-    N_B0 =  1e+04
-    T_1 = 2e+04
-    T_2 = 2.5e+04
-    m = 4e-03
+def const_mig0001(N_0,N_B0,mig_prop,t_1,t_2,seq_length,recomb_rate,mut_rate,print_):
+    # N_A0 = 1e+04
+    # N_B0 =  1e+04
+    # T_1 = 2e+04
+    # T_2 = 2.5e+04
+    m = mig_prop
     
     population_configurations = [
         msprime.PopulationConfiguration(
-            sample_size=2, initial_size=N_A0, growth_rate=0),
+            sample_size=2, initial_size=N_0, growth_rate=0),
         msprime.PopulationConfiguration(
             sample_size=0, initial_size=N_B0, growth_rate=0)
     ]
     migration_matrix = [[0,0],[0,0]]
     demographic_events = [
-        msprime.MigrationRateChange(time = T_1,rate = m, matrix_index=(0,1)),
-        msprime.MigrationRateChange(time = T_1,rate = m, matrix_index=(1,0)),
-        msprime.MigrationRateChange(time = T_2,rate = 0, matrix_index=(0,1)),
-        msprime.MigrationRateChange(time = T_2,rate = 0, matrix_index=(1,0)),
-        msprime.MassMigration(time=T_2, source =1, destination = 0, proportion = 1)
+        msprime.MigrationRateChange(time = t_1,rate = m, matrix_index=(0,1)),
+        msprime.MigrationRateChange(time = t_1,rate = m, matrix_index=(1,0)),
+        msprime.MigrationRateChange(time = t_2,rate = 0, matrix_index=(0,1)),
+        msprime.MigrationRateChange(time = t_2,rate = 0, matrix_index=(1,0)),
+        msprime.MassMigration(time=t_2, source =1, destination = 0, proportion = 1)
     ]
     # Use the demography debugger to print out the demographic history
     # that we have just described.
@@ -617,8 +617,8 @@ def const_mig0001(print_):
         print('Demographic history:\n')
         dd.print_history()
     sim = msprime.simulate(population_configurations=population_configurations,
-                           demographic_events=demographic_events, length=150e+06, recombination_rate=2e-08,
-                           mutation_rate=2e-08)
+                           demographic_events=demographic_events, length=seq_length, recombination_rate=recomb_rate,
+                           mutation_rate=mut_rate)
     return sim
 
 def const_mig0002(print_):
