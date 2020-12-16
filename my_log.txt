@@ -97,3 +97,33 @@ python msprime_create.py matching_mig03 -o_mhsname matching_mig03/ -o_coalname m
 Create new folders (on the hpc) called const_mig1 and const_mig2 in coal_data AND vcf_mhs. These are to test two scenarios of msprime models, const_mig0001 and const_mig0002.
 These have constant migration followed by a mass migration. const_mig0001 uses: msprime.MassMigration(time=T_2, source =1, destination = 0, proportion = 1).   
 and const_mig0002 uses: msprime.MassMigration(time=T_2, source =0, destination = 2, proportion = 1)
+update: these both work fine
+
+## Date 20201012
+
+Run PSMC on matching_mig 01 with command line:
+
+./MSMC2 `find /home/tc557/ancestry/vcf_mhs/matching_mig01/ -name "*.txt"` -o msmc_out/matching_mig01/matching_mig01_all
+
+Ran PSMC on the rest of the matching_migX files with the slurm submission file 20201210_slurm_matchingpsmc, which submits the bash script 
+20201210_bash_psmc_matching, which has a series of similar MSMC commands to the one above, but with different rates.
+update 20201214: matching_mig02 and matching_mig03 failed. Could re run these at some point. 
+
+Created simulations of continuous migration, with rates 5e-04, 5e-03, 3e-02, 5e-01, 2e-01, between times 2e+04 and 4e+04 (gens).
+These are stored in folders contmigX in ancestry/coal_data/ and ancestry/vcf_mhs/ where X is either 5e4, 5e3, 3e2, 5e1 or 2e1. These 
+simulations are each 150MB long and run 20 times. The command line, for example for rate 5e-04, is: 
+python msprime_generate.py const_mig0001 -N 10000 -N_B 10000 -L 150000000 -mig 5e-04 -t 20000 40000 -o_coaldir /home/tc557/ancestry/coal_data/contmig5e4/ -o_mhsdir /home/tc557/ancestry/vcf_mhs/contmig5e4/ --suffix_time
+which is iterated 20 times. The slurm submission scripts were 20201210_slurm_contmig5e3, 20201210_slurm_contmig3e2, 20201210_slurm_contmig5e1 and
+ 20201210_slurm_contmig2e1, which run the bash scripts 20201210_bashcontmig5e3, 20201210_bashcontmig3e2, 20201210_bashcontmig5e1 and 20201210_bashcontmig2e1 respectively. The model in msprime_models.py they use is const_mig0001
+ 
+Submitted 20201210_slurm_matching_contmig5e4 which runs 20201210_bash_matchingcontmig5e4 which iterates the following command line 20 times:
+python msprime_generate.py double_m0002 -N 10000 -N_B 10000 -L 150000000 -mig 2 -t 20000 40000 -o_coaldir /home/tc557/ancestry/coal_data/matching_contmig5e4/ -o_mhsdir /home/tc557/ancestry/vcf_mhs/matching_contmig5e4/ --suffix_time
+Which runs a genuine population size change that I believe matches the continuous struct with rate 5e4, see the jupyter notebook msprime_T2_times.ipynb
+
+## Date 20201214
+
+Run PSMC on contmig5e4 and matching_contmig5e4 with ./MSMC2 `find /home/tc557/ancestry/vcf_mhs/contmig5e4 -name "*.txt"` -o msmc_out/contmig5e4/contmig5e4_all
+and ./MSMC2 `find /home/tc557/ancestry/vcf_mhs/matching_contmig5e4 -name "*.txt"` -o msmc_out/matching_contmig5e4/matching_contmig5e4_all
+
+
+
