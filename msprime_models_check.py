@@ -27,7 +27,7 @@ else:
     print_ = False
 
 print('Running simulation of model {}'.format(model))
-exec('sim = ' + model + '(' + str(print_) + ')' )
+exec('sim = ' + model + '(' + ')' )
 print('Simulation finished')
     
 # count number of segregating sites

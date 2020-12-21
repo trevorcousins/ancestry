@@ -823,3 +823,75 @@ def constmig20201216():
                            demographic_events=demographic_events, length=seq_length, recombination_rate=2e-08,
                            mutation_rate=2e-08)
     return sim
+
+def constmig_m5e05():
+    T_1 = 2e+04
+    T_2 = 6e+04
+    N_A0 = 1e+04
+    N_B0 =  1e+04
+    m = 5e-05
+    seq_length = 150e+06
+    
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_A0, growth_rate=0),
+        msprime.PopulationConfiguration(
+            sample_size=0, initial_size=N_B0, growth_rate=0)
+    ]
+    migration_matrix = [[0,0],[0,0]]
+    demographic_events = [
+        msprime.MigrationRateChange(time = T_1,rate = m, matrix_index=(0,1)),
+        msprime.MigrationRateChange(time = T_1,rate = m, matrix_index=(1,0)),
+        msprime.MigrationRateChange(time = T_2,rate = 0, matrix_index=(0,1)),
+        msprime.MigrationRateChange(time = T_2,rate = 0, matrix_index=(1,0)),        
+        msprime.MassMigration(time=T_2, source =1, destination =0, proportion = 1)
+    ]
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,migration_matrix=migration_matrix,
+        demographic_events=demographic_events)
+
+    print('Demographic history:\n')
+    dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           demographic_events=demographic_events, length=seq_length, recombination_rate=2e-08,mutation_rate=2e-08)
+    return sim
+
+def psc_matching_mig5e05():
+    N_A0 = 1e+04
+    N_B0 =  1e+04
+    T_1 = 2e+04
+    T_2 = 6e+04
+    seq_length = 150e+06
+    
+    population_configurations = [
+        msprime.PopulationConfiguration(
+            sample_size=2, initial_size=N_A0, growth_rate=0),
+    ]
+    demographic_events = [
+        msprime.PopulationParametersChange(time=T_1+0, initial_size=11500),
+        msprime.PopulationParametersChange(time=T_1+2500, initial_size=13000),
+        msprime.PopulationParametersChange(time=T_1+5000, initial_size=15000),
+        msprime.PopulationParametersChange(time=T_1+7500, initial_size=17000),
+        msprime.PopulationParametersChange(time=T_1+10000, initial_size=19000),
+        msprime.PopulationParametersChange(time=T_1+12500, initial_size=20000),
+        msprime.PopulationParametersChange(time=T_1+15000, initial_size=21000),
+        msprime.PopulationParametersChange(time=T_1+17500, initial_size=22000),
+        msprime.PopulationParametersChange(time=T_1+20000, initial_size=22300),
+        msprime.PopulationParametersChange(time=T_1+22500, initial_size=22500),
+        msprime.PopulationParametersChange(time=T_1+25000, initial_size=22700),
+        msprime.PopulationParametersChange(time=T_1+27500, initial_size=22900),
+        msprime.PopulationParametersChange(time=T_1+30000, initial_size=23000),
+        msprime.PopulationParametersChange(time=T_1+32500, initial_size=23000),
+        msprime.PopulationParametersChange(time=T_2,initial_size=10000)
+    ]
+    # Use the demography debugger to print out the demographic history
+    # that we have just described.
+    dd = msprime.DemographyDebugger(
+        population_configurations=population_configurations,demographic_events=demographic_events)
+
+    print('Demographic history:\n')
+    dd.print_history()
+    sim = msprime.simulate(population_configurations=population_configurations,
+                           demographic_events=demographic_events, length=seq_length, recombination_rate=2e-08,
+                           mutation_rate=2e-08)
+    return sim

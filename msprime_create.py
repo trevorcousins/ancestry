@@ -44,7 +44,7 @@ else:
 
 print('Running simulation of model {}'.format(model))
 # command_line = 'sim = ' + model + '(' + str(print_) + ')'
-command_line = model + '()'
+command_line = model + '(' + ')'
 exec('sim = ' + command_line)
 
 tmrca_data = np.array(get_coal_data(sim, args)) # get coalescent data, as np array
