@@ -7,16 +7,29 @@ import numpy as np
 import pdb
 
 def abinitio(pop_size,T,N_0,N_T,mu=2e-08,r=2e-08):
+    """
+    pop_size: array of diploid population sizes per time interval, of length (N_T)
+    T: time intervals, scaled by coalescent time (/2N)
+    N_0: population size at t = 0
+    N_T: number of states
+    mu: mutation rate per gen per bp
+    r: recomb rate per gen per bp
+    """
     print('Calculating theoretical TM probablities.')
     def lambda_(int):
-        lambd = pop_size[int]/N_0
+        # scale lambda by coalescent units (/2N)
+        lambd = pop_size[int]/(2*N_0)
         return lambd
 
     def delta(int):
+        # difference in each time interval
         delta_ = T[int+1] - T[int]
         return delta_
 
     def Lnew(time1,time2):
+        """
+        L is the probability of not coalescing between time1 and time2)
+        """
         # possibilities:
         # time1 and time2 continuous
         # time1 continuous time2 discrete
