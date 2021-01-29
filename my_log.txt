@@ -125,5 +125,19 @@ Which runs a genuine population size change that I believe matches the continuou
 Run PSMC on contmig5e4 and matching_contmig5e4 with ./MSMC2 `find /home/tc557/ancestry/vcf_mhs/contmig5e4 -name "*.txt"` -o msmc_out/contmig5e4/contmig5e4_all
 and ./MSMC2 `find /home/tc557/ancestry/vcf_mhs/matching_contmig5e4 -name "*.txt"` -o msmc_out/matching_contmig5e4/matching_contmig5e4_all
 
+## Date 20201221
+
+Have run the following command line
+python msprime_create.py constmig_m5e05 -o_coaldir /home/tc557/ancestry/coal_data/contmig5e5/ -o_mhsdir /home/tc557/ancestry/vcf_mhs/contmig5e5 --suffix_time
+20 times in the script 20201221_bashcontmig5e5 which writes sequences of 150MB into coal_dir/contmig5e5 and vcf_mhs/contmig5e5.
+I submitted this with the script 20201221_slurm_contmig5e5 which has job niumber 32541328. 
+This hitory has (fixed) rate of migration 5e-05 between 20000 and 60000 generations.
+
+Have run the following command line
+python msprime_create.py psc_matching_mig5e05 -o_coaldir /home/tc557/ancestry/coal_data/psc_match5e05/ -o_mhsdir /home/tc557/ancestry/vcf_mhs/psc_match5e05/ --suffix_time
+20 times in the script 20201221_bashpsc5e5 which writes sequences of 150MB into coal_dir/pscmatch5e05 and vcf_mhs/pscmatch5e05.
+I submitted this with the script 20201221_slurm_psc5e5 which has job niumber 32544039.
+This hitory has genuine population size change which matches the structured history with rate m = 5e-05 between 20000 and 60000 generations, see my jupyter notebook msprime_T2_distribution
+
 
 
